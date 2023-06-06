@@ -6,7 +6,7 @@ public class FightState : BaseState
 {
     float swingDisplacement = 1.5f;
     const float tau = 2* Mathf.PI;
-    float period = 2f;
+    float period = 1f;
     float attackTime = 0.5f;
     Vector3 statingPos;
     public FightState(Transform self, Transform target) : base(self, target)

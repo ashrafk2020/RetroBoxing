@@ -37,44 +37,48 @@ public class Fighter : MonoBehaviour
 
     void Update()
     {
-        
 
-        RaycastHit2D raycastHit2DLeft = Physics2D.Raycast(leftHand.position,GetDirection(),attackDistance,hittableLayer);
-        if(raycastHit2DLeft.collider != null)
+
+        RaycastHit2D raycastHit2DLeft = Physics2D.Raycast(leftHand.position, GetDirection(), attackDistance, hittableLayer);
+        RaycastHit2D raycastHit2DRight = Physics2D.Raycast(rightHand.position, GetDirection(), attackDistance, hittableLayer);
+
+        if (raycastHit2DLeft.collider != null)
         {
             IDamageable damageable = raycastHit2DLeft.collider.GetComponent<IDamageable>();
-            if(damageable != null)
+            if (damageable != null)
             {
                 canAttackLeftHand = true;
                 target = damageable;
-            //    Debug.Log(gameObject.name+"see a target at hand" + leftHand.name);
+                //    Debug.Log(gameObject.name+"see a target at hand" + leftHand.name);
             }
+           
 
         }
-        else
-        {
-                canAttackLeftHand = false;
-        }
 
-        RaycastHit2D raycastHit2DRight = Physics2D.Raycast(rightHand.position,GetDirection(),attackDistance,hittableLayer);
 
-           if(raycastHit2DRight.collider != null)
+
+        else if (raycastHit2DRight.collider != null)
         {
             IDamageable damageable = raycastHit2DRight.collider.GetComponent<IDamageable>();
-            if(damageable != null)
+            if (damageable != null)
             {
-            //    Debug.Log(gameObject.name+ "see a target at hand" + rightHand.name);
+                //    Debug.Log(gameObject.name+ "see a target at hand" + rightHand.name);
                 canAttackRightHand = true;
-                  target = damageable;
+                target = damageable;
             }
+            
 
         }
         else
         {
+            target = null;
             canAttackRightHand = false;
+            canAttackLeftHand = false;
 
+            // 
         }
-        if(isAIPlayer || gameFinished) return;
+
+        if (isAIPlayer || gameFinished) return;
         HandleAttack();
     }
 
@@ -136,6 +140,8 @@ public class Fighter : MonoBehaviour
             {
                 target.TakeDamage(this,1f);
                 audioSource.PlayOneShot(hitClip);
+                // target = null;
+// 
                 // play hit sound
 
             }
@@ -152,7 +158,7 @@ public class Fighter : MonoBehaviour
 
     public bool CanAttack()
     {
-        return !(canAttackRightHand && canAttackLeftHand);
+        return !(canAttackRightHand && canAttackLeftHand) && target !=null;
         // return true;
     }
 
